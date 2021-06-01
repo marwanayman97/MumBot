@@ -88,8 +88,15 @@ def api_answer_view(request, id):
     return Response(serializer.data)
 
 @api_view(['GET', ])
-def api_schedule_view(request, id):
+def api_slot_view(request):
     
-    schedule = models.Schedules.objects.get(id=id)
-    serializer = ScheduleSerializer(schedule)
+    slot = models.Slots.objects.all()
+    serializer = SlotSerializer(slot)
+    return Response(serializer.data)
+
+@api_view(['GET', ])
+def api_status_view(request, id):
+    
+    status = models.SpecialistActiveStatus.objects.get(specialist_id=id)
+    serializer = StatusSerializer(status)
     return Response(serializer.data)

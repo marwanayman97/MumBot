@@ -25,7 +25,6 @@ class Admin(User):
 class Specialist(User):
 
     specialist_brief = models.CharField(max_length=500)
-    specialist_active_status = models.BooleanField()
 
     def __str__(self):
         return f"{self.id}"
@@ -72,9 +71,15 @@ class Answer(models.Model):
         Specialist, on_delete=models.CASCADE, related_name="AnsweredQuestions")
     answer_question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
-class Schedules(models.Model):
+class Slots(models.Model):
 
     schedule_specialist = models.ForeignKey(Specialist, on_delete=models.CASCADE)
     free_day = models.CharField(max_length=20)
-    free_day_start_time = models.TimeField(auto_now=False, auto_now_add=False)
-    free_day_end_time = models.TimeField(auto_now=False, auto_now_add=False)
+    slot_start_time = models.TimeField(auto_now=False, auto_now_add=False)
+    slot_end_time = models.TimeField(auto_now=False, auto_now_add=False)
+    booked = models.BooleanField(default=0)
+
+class SpecialistActiveStatus(models.Model):
+    
+    specilist_id = models.ForeignKey(Specialist, on_delete=models.CASCADE)
+    active_status = models.BooleanField(default=0)

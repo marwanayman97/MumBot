@@ -22,8 +22,7 @@ class SpecialistSerializer(serializers.ModelSerializer):
             'user_email',
             'user_phone',
             'user_role',
-            'specialist_brief',
-            'specialist_active_status'
+            'specialist_brief'
         )
         model = models.Specialist
 
@@ -76,12 +75,21 @@ class AnswerSerializer(serializers.ModelSerializer):
         )
         model = models.Answer
 
-class ScheduleSerializer(serializers.ModelSerializer):
+class SlotSerializer(serializers.ModelSerializer):
     class Meta:
         fields = (
             'schedule_specialist',
             'free_day',
-            'free_day_start_time',
-            'free_day_end_time'
+            'slot_start_time',
+            'slot_end_time',
+            'booked'
         )
-        model = models.Schedules
+        model = models.Slots
+
+class StatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = (
+            'specialist_id',
+            'active_status'
+        )
+        model = models.SpecialistActiveStatus

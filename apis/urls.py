@@ -11,6 +11,7 @@ urlpatterns = [
     path("api/videosession/<int:id>/", views.api_video_view, name="videodetail"),
     path("api/question/<int:id>/", views.api_question_view, name="questiondetail"),
     path("api/answer/<int:id>/", views.api_answer_view, name="answerdetail"),
-    path("api/schedule/<int:id>/", views.api_schedule_view, name="scheduledetail"),
+    path("api/slot/", views.api_slot_view, name="slotdetail"),
+    path("api/status/<int:id>/", views.api_status_view, name="statusdetail"),
 
 ]

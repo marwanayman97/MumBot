@@ -93,7 +93,7 @@ def addusers(request):
     if request.method == "POST":
         if request.POST["user_type"] == "2":
             user = Specialist(user_role=2, user_name=request.POST["user_name"], user_email=request.POST["user_email"], user_phone=request.POST[
-                              "user_phone"], user_password=request.POST["user_pass1"], specialist_brief=request.POST["user_brief"], specialist_active_status=0)
+                              "user_phone"], user_password=request.POST["user_pass1"], specialist_brief=request.POST["user_brief"])
             user.save()
         elif request.POST["user_type"] == "3":
             user = Parent(user_role=3, user_name=request.POST["user_name"], user_email=request.POST["user_email"],
