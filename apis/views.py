@@ -90,8 +90,8 @@ def api_answer_view(request, id):
 @api_view(['GET', ])
 def api_slot_view(request):
     
-    slot = models.Slots.objects.all()
-    serializer = SlotSerializer(slot)
+    slots = models.Slots.objects.all()
+    serializer = SlotSerializer(slots, many=True)
     return Response(serializer.data)
 
 @api_view(['GET', ])
