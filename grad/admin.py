@@ -11,4 +11,4 @@ admin.site.register(VideoSession)
 admin.site.register(Question)
 admin.site.register(Answer)
 admin.site.register(Slots)
-admin.site.register(SpecialistActiveStatus)
+

@@ -22,6 +22,7 @@ class SpecialistSerializer(serializers.ModelSerializer):
             'user_email',
             'user_phone',
             'user_role',
+            'active_status',
             'specialist_brief'
         )
         model = models.Specialist
@@ -87,14 +88,6 @@ class SlotSerializer(serializers.ModelSerializer):
             'booked'
         )
         model = models.Slots
-
-class StatusSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = (
-            'specialist_id',
-            'active_status'
-        )
-        model = models.SpecialistActiveStatus
 
 
 class AppointmentSerializer(serializers.ModelSerializer):

@@ -23,7 +23,7 @@ class Admin(User):
 
 
 class Specialist(User):
-
+    active_status = models.BooleanField(default=0)
     specialist_brief = models.CharField(max_length=500)
 
     def __str__(self):
@@ -90,10 +90,3 @@ class Slots(models.Model):
     def __str__(self):
         return f"{self.id}"
 
-class SpecialistActiveStatus(models.Model):
-    
-    specilist_id = models.ForeignKey(Specialist, on_delete=models.CASCADE)
-    active_status = models.BooleanField(default=0)
-
-    def __str__(self):
-        return f"{self.id}"

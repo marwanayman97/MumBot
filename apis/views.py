@@ -4,11 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from grad import models
-from datetime import datetime
 from .serializers import *
-import calendar
-
-weekDays = ("Monday", "" )
 
 
 # Create your views here.
@@ -51,6 +47,21 @@ def api_parent_update(request, id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# specialist update, get specialist ID and gets all of the specialist's data including the fixed data and the data that needs to be changed
+@api_view(['PUT', ])
+@csrf_exempt
+def api_specialist_update(request, id):
+    
+    specialist = models.Specialist.objects.get(id=id)
+    serializer = SpecialistSerializer(specialist, data=request.data, partial=True)
+    data = {}
+    if serializer.is_valid():
+        serializer.save()
+        data["success"] = "Update Successful"
+        return Response(data=data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 # Deletes a parent from database, needs parent ID, not needed
 @api_view(['DELETE', ])
 def api_parent_delete(request, id):
@@ -83,8 +94,6 @@ def api_inquiry_view(request, id):
     return Response(serializer.data)
 
 
-
-
 @api_view(['GET', ])
 def api_question_view(request, id):
     
@@ -115,7 +124,6 @@ def api_slot_view(request, id):
 @csrf_exempt
 def api_slot_create(request):
     
-    request.data._mutable = True
     slot = models.Slots()
     serializer = SlotSerializer(slot, data=request.data)
     
@@ -144,10 +152,9 @@ def api_slot_delete(request,id):
 @api_view(['PUT', ])
 @csrf_exempt
 def api_slot_update(request, id):
-    request.data._mutable = True
+    
     slot = models.Slots.objects.get(id=id)
-    request.data["schedule_specialist"]= slot.schedule_specialist
-    serializer = SlotSerializer(slot, data=request.data)
+    serializer = SlotSerializer(slot, data=request.data, partial=True)
     data = {}
     if serializer.is_valid():
         serializer.save()
