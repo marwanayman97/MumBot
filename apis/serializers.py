@@ -80,6 +80,8 @@ class SlotSerializer(serializers.ModelSerializer):
         fields = (
             'schedule_specialist',
             'free_day',
+            'slot_date',
+            'slot_start_time_integer',
             'slot_start_time',
             'slot_end_time',
             'booked'
@@ -93,3 +95,15 @@ class StatusSerializer(serializers.ModelSerializer):
             'active_status'
         )
         model = models.SpecialistActiveStatus
+
+
+class AppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = (
+            'parent_id',
+            'specialist_id',
+            'video_date',
+            'video_start_time',
+            'video_end_time'
+        )
+        model = models.VideoSession
