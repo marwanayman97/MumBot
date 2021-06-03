@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import include, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from itertools import chain
-from .models import VideoSession, Parent, Specialist, Admin
+from .models import VideoSession, Parent, Specialist, Admin, Slots
 from django.contrib.auth import authenticate, login, logout
 from datetime import datetime
 
@@ -88,7 +88,6 @@ def confirmdeleteuser(request, id, user_role):
 def adduser(request):
     return render(request, "grad/adduser.html")
 
-
 def addusers(request):
     if request.method == "POST":
         if request.POST["user_type"] == "2":
@@ -129,6 +128,7 @@ def editappointment(request, id):
         "appointment": VideoSession.objects.get(pk=id),
         "newdate": VideoSession.objects.get(pk=id).video_date.strftime("%Y-%m-%d"),
         "newtime": VideoSession.objects.get(pk=id).video_start_time.strftime("%H:%M"),
+        "all_slots": Slots.objects.filter(slot_date=VideoSession.objects.get(pk=id).video_date, booked=0).values("slot_start_time").annotate(n=count("pk")),
     })
 
 

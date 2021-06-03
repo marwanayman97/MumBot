@@ -8,6 +8,36 @@ from .serializers import *
 
 
 # Create your views here.
+
+
+@api_view(['POST', ])
+@csrf_exempt
+def api_parent_login(request):
+    
+    try:
+        parent = models.Parent.objects.get(user_email= request.data["user_email"], user_password =  request.data["user_password"])
+        
+    except models.Parent.DoesNotExist:   
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = ParentSerializer(parent)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST', ])
+@csrf_exempt
+def api_specialist_login(request):
+    try:
+        specialist = models.Specialist.objects.get(user_email= request.data["user_email"], user_password =  request.data["user_password"])
+        
+    except models.Specialist.DoesNotExist:   
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = SpecialistSerializer(specialist)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+
+
 #This gets the parent Id and returns all of its data
 @api_view(['GET', ])
 def api_parent_view(request, id):
@@ -220,3 +250,5 @@ def api_appointment_create(request):
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+
+

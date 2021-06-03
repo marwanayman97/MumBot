@@ -84,13 +84,17 @@
                                                 Appointment Date
                                                     <input type="date" class="form-control form-control-user"
                                                         placeholder="Appointment Date"
-                                                        value="{{newdate}}" name="date">
+                                                        value="{{newdate}}" name="date" id="app_date">
                                                 </div>
                                                 <div class="form-group">
                                                 Appointment Time
-                                                    <input type="time" class="form-control form-control-user"
-                                                        id="exampleInputTel" placeholder="Appointment Start Time"
-                                                        value="{{newtime}}" name="time">
+                                                    <select class="form-control" id="AppTimeSelect">
+                                                        <option selected disabled>{{newtime}}</option>
+                                                        {% for slot in all_slots%}
+                                                        <option value="{{slot.id}}">{{slot.slot_start_time}} to {{slot.slot_end_time}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    
                                                 </div>
 
 

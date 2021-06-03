@@ -82,8 +82,8 @@ class Slots(models.Model):
     schedule_specialist = models.ForeignKey(Specialist, on_delete=models.CASCADE)
     free_day = models.CharField(max_length=20, default="")
     slot_date = models.DateField(auto_now=False, auto_now_add=False, default="2000-01-01")
-    slot_start_time = models.TimeField(auto_now=True, auto_now_add=False)
-    slot_end_time = models.TimeField(auto_now=True, auto_now_add=False)
+    slot_start_time = models.TimeField(auto_now=False, auto_now_add=False)
+    slot_end_time = models.TimeField(auto_now=False, auto_now_add=False)
     slot_start_time_integer = models.IntegerField(default=0)
     booked = models.BooleanField(default=0)
 
