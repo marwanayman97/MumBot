@@ -48,7 +48,11 @@
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Appointments</h1>
                     <p class="mb-4">Here you can view/edit the appointments of any of the parents.</p>
-
+                    {% if success %}
+                        <div class="text-center m-3 alert alert-success">
+                        {{success}}
+                        </div>
+                    {% endif %}
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
@@ -83,9 +87,9 @@
                                         <tr>
                                             <td>{{app.id}}</td>
                                             <td>{{app.parent_id}}</td>
-                                            <td>{{app.specialist_id}}</td>
-                                            <td>{{app.video_date}}</td>
-                                            <td>{{app.video_start_time}}</td>
+                                            <td>{{app.video_slot.schedule_specialist}}</td>
+                                            <td>{{app.video_slot.slot_date}}</td>
+                                            <td>{{app.video_slot.slot_start_time|date:"H:i"}} to {{app.video_slot.slot_end_time|date:"H:i"}}</td>
                                             <td><a href="{% url 'editappointment' app.id %}">Edit Appointment</a></td>
 
                                         </tr>

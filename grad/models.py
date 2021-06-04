@@ -42,25 +42,12 @@ class SingleInquiry(models.Model):
     def __str__(self):
         return f"{self.id}"
 
-class VideoSession(models.Model):
-
-    parent_id = models.ForeignKey(Parent, on_delete=models.CASCADE, related_name="VideoSessions")
-    specialist_id = models.ForeignKey(Specialist, on_delete=models.CASCADE, related_name="VideoSessions")
-    video_price = models.FloatField(default=50)
-    video_duration_in_minutes = models.IntegerField(default= 60)
-    video_date = models.DateField(auto_now=False, auto_now_add=False)
-    video_start_time = models.TimeField(auto_now=False, auto_now_add=False)
-    video_end_time = models.TimeField(auto_now=False, auto_now_add=False)
-    
-    def __str__(self):
-        return f"{self.id}"
 
 class Question(models.Model):
 
     question_body = models.CharField(max_length=1000)
     question_tags = models.CharField(max_length=200, default="")
-    question_date = models.DateTimeField(auto_now=False, auto_now_add=False)
-    question_admin = models.ForeignKey(Admin, on_delete=models.CASCADE)
+    question_date = models.DateTimeField(auto_now=True, auto_now_add=False)
 
     def __str__(self):
         return f"{self.id}"
@@ -90,3 +77,12 @@ class Slots(models.Model):
     def __str__(self):
         return f"{self.id}"
 
+class VideoSession(models.Model):
+
+    parent_id = models.ForeignKey(Parent, on_delete=models.CASCADE, related_name="VideoSessions")
+    video_price = models.FloatField(default=50)
+    video_duration_in_minutes = models.IntegerField(default= 60)
+    video_slot = models.ForeignKey(Slots, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"{self.id}"

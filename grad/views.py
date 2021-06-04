@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.urls import include, reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from itertools import chain
-from .models import VideoSession, Parent, Specialist, Admin, Slots
+from django.views.decorators.csrf import csrf_exempt
+from .models import VideoSession, Parent, Specialist, Admin, Slots, Question
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from datetime import datetime
 
 
@@ -126,16 +128,46 @@ def logout_view(request):
 def editappointment(request, id):
     return render(request, "grad/editappointment.html", {
         "appointment": VideoSession.objects.get(pk=id),
-        "newdate": VideoSession.objects.get(pk=id).video_date.strftime("%Y-%m-%d"),
-        "newtime": VideoSession.objects.get(pk=id).video_start_time.strftime("%H:%M"),
-        "all_slots": Slots.objects.filter(slot_date=VideoSession.objects.get(pk=id).video_date, booked=0).values("slot_start_time").annotate(n=count("pk")),
+        "newdate": VideoSession.objects.get(pk=id).video_slot.slot_date.strftime("%Y-%m-%d"),
+        "newstarttime": VideoSession.objects.get(pk=id).video_slot.slot_start_time,
+        "newendtime": VideoSession.objects.get(pk=id).video_slot.slot_end_time,
+        "all_slots": Slots.objects.filter(slot_date=VideoSession.objects.get(pk=id).video_slot.slot_date, booked=0).values("slot_start_time", "slot_end_time").distinct(),
     })
 
 
 def editappointmentconfirmation(request, id):
     if request.method == "POST":
         appointment = VideoSession.objects.get(pk=id)
-        appointment.video_date = request.POST["date"]
-        appointment.video_start_time = request.POST["time"]
-        appointment.save()
-    return HttpResponseRedirect(reverse("appointments"))
+        if appointment.video_slot.slot_date.strftime("%Y-%m-%d") == request.POST["date"] and appointment.video_slot.slot_start_time.strftime("%H:%M") == request.POST["time"]:
+            messages.error(request, "No change was made!")
+            return HttpResponseRedirect(reverse("editappointment", kwargs= {'id':appointment.id}))
+        else:
+            oldslot = Slots.objects.get(slot_date=appointment.video_slot.slot_date, slot_start_time=appointment.video_slot.slot_start_time , schedule_specialist=appointment.video_slot.schedule_specialist, booked=1)
+            oldslot.booked = 0
+            newslot = Slots.objects.filter(slot_date=request.POST["date"], slot_start_time=request.POST["time"], booked=0).first()
+            newslot.booked = 1
+            oldslot.save()
+            newslot.save()
+            appointment.video_slot = newslot
+            appointment.save()
+            return HttpResponseRedirect(reverse("appointments"))
+
+@csrf_exempt
+def getallslotswithdate(request):
+    if request.method == "POST":
+        day_date = request.POST['daydate']
+        try:
+            times = Slots.objects.filter(slot_date=day_date, booked=0).values("slot_start_time", "slot_end_time").distinct()
+        except Exception:
+            data['error_message'] = 'An error occurred.'
+            return JsonResponse(data)
+        return JsonResponse(list(times.values('slot_start_time', 'slot_end_time')), safe = False) 
+
+def addquestion(request):
+    if request.method == "POST":
+        
+        question = Question(question_body=request.POST['questionbody'], question_tags=request.POST['questiontags'])
+        question.save()
+        messages.success(request, "Question was added successfuly!")
+        return HttpResponseRedirect(reverse("addquestion"))
+        

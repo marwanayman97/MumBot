@@ -45,12 +45,9 @@ class VideoSessionSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'parent_id',
-            'specialist_id',
             'video_price',
             'video_duration_in_minutes',
-            'video_date',
-            'video_start_time',
-            'video_end_time'
+            'video_slot'
         )
         model = models.VideoSession
 

@@ -17,6 +17,6 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("editappointment/<int:id>/", views.editappointment, name="editappointment"),
     path("editappointmentconfirmation/<int:id>/", views.editappointmentconfirmation, name="editappointmentconfirmation"),
-
-
+    path("getallslotswithdate/", views.getallslotswithdate, name="getallslotswithdate"),
+    path("addquestion", views.addquestion, name="addquestion"),
 ]

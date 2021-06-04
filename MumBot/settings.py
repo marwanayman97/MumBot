@@ -25,7 +25,9 @@ SECRET_KEY = '4_2d(q##__29a-#ji2e%w%pj&=^gi5bo)r(dj!&&5@6-3-irt@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*',
+]
 
 
 # Application definition
@@ -110,6 +112,10 @@ REST_FRAMEWORK = {
     ]
 }
 
+TIME_INPUT_FORMATS = [
+    
+    '%H:%M', 
+]
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
