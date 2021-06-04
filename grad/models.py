@@ -21,7 +21,6 @@ class Admin(User):
         return f"{self.id}"
 
 
-
 class Specialist(User):
     active_status = models.BooleanField(default=0)
     specialist_brief = models.CharField(max_length=500)
@@ -32,8 +31,10 @@ class Specialist(User):
 
 class SingleInquiry(models.Model):
 
-    parent_id = models.ForeignKey(Parent, on_delete=models.CASCADE, related_name="Chats")
-    specialist_id = models.ForeignKey(Specialist, on_delete=models.CASCADE, related_name="Chats")
+    parent_id = models.ForeignKey(
+        Parent, on_delete=models.CASCADE, related_name="Chats")
+    specialist_id = models.ForeignKey(
+        Specialist, on_delete=models.CASCADE, related_name="Chats")
     inquiry_price = models.FloatField()
     inquire_duration_in_minutes = models.IntegerField()
     inquiry_start_time = models.TimeField(auto_now=False, auto_now_add=False)
@@ -59,16 +60,20 @@ class Answer(models.Model):
     answer_date = models.DateTimeField(auto_now=False, auto_now_add=False)
     answer_specialist = models.ForeignKey(
         Specialist, on_delete=models.CASCADE, related_name="AnsweredQuestions")
-    answer_question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    answer_question = models.ForeignKey(
+        Question, on_delete=models.CASCADE, related_name="RelatedAnswers")
 
     def __str__(self):
         return f"{self.id}"
 
+
 class Slots(models.Model):
 
-    schedule_specialist = models.ForeignKey(Specialist, on_delete=models.CASCADE)
+    schedule_specialist = models.ForeignKey(
+        Specialist, on_delete=models.CASCADE)
     free_day = models.CharField(max_length=20, default="")
-    slot_date = models.DateField(auto_now=False, auto_now_add=False, default="2000-01-01")
+    slot_date = models.DateField(
+        auto_now=False, auto_now_add=False, default="2000-01-01")
     slot_start_time = models.TimeField(auto_now=False, auto_now_add=False)
     slot_end_time = models.TimeField(auto_now=False, auto_now_add=False)
     slot_start_time_integer = models.IntegerField(default=0)
@@ -77,12 +82,14 @@ class Slots(models.Model):
     def __str__(self):
         return f"{self.id}"
 
+
 class VideoSession(models.Model):
 
-    parent_id = models.ForeignKey(Parent, on_delete=models.CASCADE, related_name="VideoSessions")
+    parent_id = models.ForeignKey(
+        Parent, on_delete=models.CASCADE, related_name="VideoSessions")
     video_price = models.FloatField(default=50)
-    video_duration_in_minutes = models.IntegerField(default= 60)
+    video_duration_in_minutes = models.IntegerField(default=60)
     video_slot = models.ForeignKey(Slots, on_delete=models.CASCADE)
-    
+
     def __str__(self):
         return f"{self.id}"

@@ -31,7 +31,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-         {% include "grad/sidebar.html" %}
+        {% include "grad/sidebar.html" %}
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -44,6 +44,12 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
+                    {% for success in messages %}
+                    <div class="text-center m-3 alert alert-success">
+                        {{success}}
+                    </div>
+                    {% endfor %}
+
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Users</h1>
                     <p class="mb-4">Here you can view/edit the details of any of the users.</p>
@@ -55,7 +61,8 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered table-hover" id="dataTable" width="100%"
+                                    cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>User ID</th>
@@ -85,7 +92,7 @@
                                         <tr>
                                             <td>{{user.id}}</td>
                                             <td>{{user.user_name}}</td>
-                                            {% if user.user_role == 3 %} 
+                                            {% if user.user_role == 3 %}
                                             <td>Parent</td>
                                             {% else %}
                                             <td>Parenting Specialist</td>
@@ -95,13 +102,15 @@
                                             {% if user.user_role == 3 %}
                                             <td>No Brief</td>
                                             {% else %}
-                                            <td>{{user.specialist_brief}}</td>  
-                                            {% endif %}  
-                                            <td><a href="{% url 'edituser' user.id user.user_role %}" class="btn btn-success">Edit User</a></td>
-                                            <td><a href="{% url 'deleteuser' user.id user.user_role %}" class="btn btn-danger">Delete User</a></td>
+                                            <td>{{user.specialist_brief}}</td>
+                                            {% endif %}
+                                            <td><a href="{% url 'edituser' user.id user.user_role %}"
+                                                    class="btn btn-success">Edit User</a></td>
+                                            <td><a href="{% url 'deleteuser' user.id user.user_role %}"
+                                                    class="btn btn-danger">Delete User</a></td>
 
                                         </tr>
-                                       {% endfor %}
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>

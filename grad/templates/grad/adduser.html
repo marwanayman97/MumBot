@@ -8,13 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    
+
     {% load static %}
     <title>Admin - Add User</title>
 
     <!-- Custom fonts for this template-->
     <link href="{% static 'grad/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
@@ -34,94 +35,109 @@
 
             <!-- Main Content -->
             <div id="content">
-				
+
                 {% include "grad/navbar.html" %}
-                
+
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-					
+
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Add User</h1>
-                       
+
                     </div>
 
-                    
-                   
 
-            <div class="col-xl-12 col-lg-12 col-md-12">
 
-                <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0">
-                        <!-- Nested Row within Card Body -->
-                        <div class="row">
-                            <div class="col-lg-3"></div>
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                	<div class="text-center m-3"><i class="fas fa-fw fa-user-plus fa-5x"></i></div>
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Add User</h1>
+
+                    <div class="col-xl-12 col-lg-12 col-md-12">
+
+                        <div class="card o-hidden border-0 shadow-lg my-5">
+                            <div class="card-body p-0">
+                                <!-- Nested Row within Card Body -->
+                                <div class="row">
+                                    <div class="col-lg-3"></div>
+                                    <div class="col-lg-6">
+                                        <div class="p-5">
+                                            <div class="text-center m-3"><i class="fas fa-fw fa-user-plus fa-5x"></i>
+                                            </div>
+                                            <div class="text-center">
+                                                <h1 class="h4 text-gray-900 mb-4">Add User</h1>
+                                            </div>
+                                            {% for error in messages %}
+                                            <div class="text-center m-3 alert alert-danger">
+                                                {{error}}
+                                            </div>
+                                            {% endfor %}
+                                            <form class="user" action="{% url 'addusers' %}" method="post">
+                                                {% csrf_token %}
+
+
+                                                <div class="form-group row">
+                                                    <div class="offset-3 col-sm-6 mb-3 mb-sm-0">
+                                                        <select class="form-control" id="userTypeSelect"
+                                                            name="user_type">
+                                                            <option value="0">User Type</option>
+                                                            <option value="2">Parenting Specialist</option>
+                                                            <option value="3">Parent</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group">
+
+                                                    <input type="text" class="form-control form-control-user"
+                                                        id="exampleFirstName" placeholder="Full Name" name="user_name">
+
+
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="email" class="form-control form-control-user"
+                                                        id="exampleInputEmail" placeholder="Email Address"
+                                                        name="user_email">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <input type="tel" class="form-control form-control-user"
+                                                        id="exampleInputTel" placeholder="Phone Number"
+                                                        name="user_phone">
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                                        <input type="password" class="form-control form-control-user"
+                                                            id="exampleInputPassword" placeholder="Password"
+                                                            name="user_pass1">
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <input type="password" class="form-control form-control-user"
+                                                            id="exampleRepeatPassword" placeholder="Confirm Password"
+                                                            name="user_pass2">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <textarea
+                                                        placeholder="Let parents know more about their parenting specialist by adding some personal information about him/her..."
+                                                        class="col-sm-12 mb-6 mb-sm-0 form-control" rows="3"
+                                                        id="userBrief" name="user_brief"></textarea>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-user btn-block btn-primary">Create
+                                                    Account</button>
+
+                                            </form>
+                                        </div>
                                     </div>
-                            <form class="user" action="{% url 'addusers' %}" method="post">
-                                {% csrf_token %}
-                            
-                            
-                                <div class="form-group row">
-                                  <div class="offset-3 col-sm-6 mb-3 mb-sm-0">      
-                                    <select class="form-control" id="userTypeSelect" name="user_type">
-                                        <option selected disabled>User Type</option>
-                                        <option value="2">Parenting Specialist</option>
-                                        <option value="3">Parent</option>
-                                     </select>
-                                   </div>    
                                 </div>
-                                    
-                            
-                                <div class="form-group">
-                                   
-                                        <input type="text" class="form-control form-control-user" id="exampleFirstName"
-                                            placeholder="Full Name" name="user_name">
-    
-        
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="Email Address" name="user_email">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <input type="tel" class="form-control form-control-user" id="exampleInputTel"
-                                        placeholder="Phone Number" name="user_phone">
-                                </div>
-                                
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Password" name="user_pass1">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="exampleRepeatPassword" placeholder="Confirm Password" name="user_pass2">
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <textarea placeholder="Let parents know more about their parenting specialist by adding some personal information about him/her..." class="col-sm-12 mb-6 mb-sm-0 form-control" rows="3" id="userBrief" name="user_brief"></textarea>
-                                </div>
-                                
-                                <button type="submit" class="btn btn-user btn-block btn-primary">Create Account</button>
-                               
-                            </form>
-                        </div>
                             </div>
                         </div>
+
                     </div>
-                </div>
 
-            </div>
 
-        
-                    
+
 
                 </div>
                 <!-- /.container-fluid -->

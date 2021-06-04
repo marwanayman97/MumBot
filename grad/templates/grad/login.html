@@ -42,6 +42,13 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
+
+                                    {% for error in messages %}
+                                    <div class="text-center m-3 alert alert-danger">
+                                        {{error}}
+                                    </div>
+                                    {% endfor %}
+
                                     {% if message %}
                                     <div> {{message}} </div>
                                     {%endif%}
@@ -58,7 +65,7 @@
                                                 id="exampleInputPassword" placeholder="Enter Password..."
                                                 name="password">
                                         </div>
-                                        
+
                                         <input type="submit" class="btn btn-primary btn-user btn-block" value="Login">
 
 
