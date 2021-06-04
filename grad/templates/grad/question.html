@@ -65,7 +65,8 @@
                                     </div>
                                     <div class="text-center m-3">
                                     {% for success in messages %}
-                                        <div class="text-center m-3 alert alert-success">
+                                        <div class="text-center m-3 alert alert-success alert-dismissible">
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                             {{success}}
                                         </div>
                                     {% endfor %}

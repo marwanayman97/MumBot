@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from grad import models
 from .serializers import *
+import hashlib
 
 
 # Create your views here.
@@ -15,7 +16,7 @@ from .serializers import *
 def api_parent_login(request):
     
     try:
-        parent = models.Parent.objects.get(user_email= request.data["user_email"], user_password =  request.data["user_password"])
+        parent = models.Parent.objects.get(user_email= request.data["user_email"], user_password = hashlib.md5(request.data["user_password"].encode()).hexdigest())
         
     except models.Parent.DoesNotExist:   
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -27,7 +28,7 @@ def api_parent_login(request):
 @csrf_exempt
 def api_specialist_login(request):
     try:
-        specialist = models.Specialist.objects.get(user_email= request.data["user_email"], user_password =  request.data["user_password"])
+        specialist = models.Specialist.objects.get(user_email= request.data["user_email"], user_password =  hashlib.md5(request.data["user_password"].encode()).hexdigest())
         
     except models.Specialist.DoesNotExist:   
         return Response(status=status.HTTP_404_NOT_FOUND)
