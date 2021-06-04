@@ -165,9 +165,10 @@ def getallslotswithdate(request):
 
 def addquestion(request):
     if request.method == "POST":
-        
-        question = Question(question_body=request.POST['questionbody'], question_tags=request.POST['questiontags'])
-        question.save()
-        messages.success(request, "Question was added successfuly!")
-        return HttpResponseRedirect(reverse("addquestion"))
-        
+        if request.user.is_authenticated:
+            question = Question(question_body=request.POST['questionbody'], question_tags=request.POST['questiontags'])
+            question.save()
+            messages.success(request, "Question was added successfuly!")
+            return HttpResponseRedirect(reverse("question"))
+        else:
+            return HttpResponseRedirect(reverse("login"))
