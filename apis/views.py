@@ -198,15 +198,6 @@ def api_slot_update(request, id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# get the id of the specialist to view his active status
-@api_view(['GET', ])
-def api_status_view(request, id):
-
-    status = models.SpecialistActiveStatus.objects.get(specialist_id=id)
-    serializer = StatusSerializer(status)
-    return Response(serializer.data)
-
-
 # Views all of the appointments of the parent, needs his ID
 @api_view(['GET', ])
 def api_parent_appointment_view(request, id):
@@ -254,3 +245,33 @@ def api_appointment_create(request):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# returns whether there exists a parent with this email or not
+# returns 200_OK if this email is free and can be used
+@api_view(['POST', ])
+@csrf_exempt
+def api_existing_parent_email(request):
+    try:
+        parent = models.Parent.objects.get(
+            user_email=request.data["user_email"])
+    # in case no specialist has this email, then return success
+    except models.Parent.DoesNotExist:
+        return Response(status=status.HTTP_200_OK)
+
+    return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+# returns whether there exists a parent with this number or not
+# return 200_OK if this phone is free and can be used
+@api_view(['POST', ])
+@csrf_exempt
+def api_existing_parent_phone(request):
+    try:
+        parent = models.Parent.objects.get(
+            user_phone=request.data["user_phone"])
+    # in case no specialist has this email, then return success
+    except models.Parent.DoesNotExist:
+        return Response(status=status.HTTP_200_OK)
+
+    return Response(status=status.HTTP_404_NOT_FOUND)
