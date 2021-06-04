@@ -15,6 +15,12 @@ def index(request):
     else:
         return render(request, "grad/index.html")
 
+def reset_password(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+    else:
+        return render(request, "grad/reset-password.html")
+
 
 def appointments(request):
     return render(request, "grad/appointments.html", {
@@ -171,7 +177,6 @@ def getallslotswithdate(request):
 
 def addquestion(request):
     if request.method == "POST":
-
         if request.user.is_authenticated:
             question = Question(question_body=request.POST['questionbody'], question_tags=request.POST['questiontags'])
             question.save()
