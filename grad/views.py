@@ -90,6 +90,7 @@ def confirmdeleteuser(request, id, user_role):
 def adduser(request):
     return render(request, "grad/adduser.html")
 
+
 def addusers(request):
     if request.method == "POST":
         if request.POST["user_type"] == "2":
@@ -140,11 +141,13 @@ def editappointmentconfirmation(request, id):
         appointment = VideoSession.objects.get(pk=id)
         if appointment.video_slot.slot_date.strftime("%Y-%m-%d") == request.POST["date"] and appointment.video_slot.slot_start_time.strftime("%H:%M") == request.POST["time"]:
             messages.error(request, "No change was made!")
-            return HttpResponseRedirect(reverse("editappointment", kwargs= {'id':appointment.id}))
+            return HttpResponseRedirect(reverse("editappointment", kwargs={'id': appointment.id}))
         else:
-            oldslot = Slots.objects.get(slot_date=appointment.video_slot.slot_date, slot_start_time=appointment.video_slot.slot_start_time , schedule_specialist=appointment.video_slot.schedule_specialist, booked=1)
+            oldslot = Slots.objects.get(slot_date=appointment.video_slot.slot_date, slot_start_time=appointment.video_slot.slot_start_time,
+                                        schedule_specialist=appointment.video_slot.schedule_specialist, booked=1)
             oldslot.booked = 0
-            newslot = Slots.objects.filter(slot_date=request.POST["date"], slot_start_time=request.POST["time"], booked=0).first()
+            newslot = Slots.objects.filter(
+                slot_date=request.POST["date"], slot_start_time=request.POST["time"], booked=0).first()
             newslot.booked = 1
             oldslot.save()
             newslot.save()
@@ -152,19 +155,23 @@ def editappointmentconfirmation(request, id):
             appointment.save()
             return HttpResponseRedirect(reverse("appointments"))
 
+
 @csrf_exempt
 def getallslotswithdate(request):
     if request.method == "POST":
         day_date = request.POST['daydate']
         try:
-            times = Slots.objects.filter(slot_date=day_date, booked=0).values("slot_start_time", "slot_end_time").distinct()
+            times = Slots.objects.filter(slot_date=day_date, booked=0).values(
+                "slot_start_time", "slot_end_time").distinct()
         except Exception:
             data['error_message'] = 'An error occurred.'
             return JsonResponse(data)
-        return JsonResponse(list(times.values('slot_start_time', 'slot_end_time')), safe = False) 
+        return JsonResponse(list(times.values('slot_start_time', 'slot_end_time')), safe=False)
+
 
 def addquestion(request):
     if request.method == "POST":
+
         if request.user.is_authenticated:
             question = Question(question_body=request.POST['questionbody'], question_tags=request.POST['questiontags'])
             question.save()
@@ -172,3 +179,4 @@ def addquestion(request):
             return HttpResponseRedirect(reverse("question"))
         else:
             return HttpResponseRedirect(reverse("login"))
+
