@@ -91,9 +91,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         fields = (
             'parent_id',
-            'specialist_id',
-            'video_date',
-            'video_start_time',
-            'video_end_time'
+            'slot_id'
         )
         model = models.VideoSession

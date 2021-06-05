@@ -149,13 +149,26 @@ def api_answer_create(request, id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# shows all of the empty slots, needs slot ID.
+# shows all of the empty slots, needs specialist ID.
 @api_view(['GET', ])
 def api_slot_view(request, id):
 
     slots = models.Slots.objects.filter(schedule_specialist=id)
     serializer = SlotSerializer(slots, many=True)
     return Response(serializer.data)
+
+# shows all of the empty slots, needs date in this format (ex. "YYYY-MM-DD") with request body ("daydate")
+# returns the distinct satrt and end time only
+@api_view(['GET', ])
+def api_slot_search(request):
+    try:
+        slots = models.Slots.objects.filter(slot_date=request.data["daydate"], booked=0).values("id", "slot_start_time", "slot_end_time").distinct()
+       
+    except models.Slots.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    return Response(slots, status=status.HTTP_200_OK)
+    
 
 
 # Adds new slots, from the parenting specialist app, needs prenting specialist Id, date of the slot, the day of the Slot written as string, start time, end time = start time + 1 hour
@@ -206,8 +219,8 @@ def api_slot_update(request, id):
 @api_view(['GET', ])
 def api_parent_appointment_view(request, id):
 
-    status = models.VideoSession.objects.get(parent_id=id)
-    serializer = AppointmentSerializer(status)
+    status = models.VideoSession.objects.filter(parent_id=id)
+    serializer = AppointmentSerializer(status, many=True)
     return Response(serializer.data)
 
 # Views all of the appointments of the specialist, needs his ID
@@ -216,8 +229,8 @@ def api_parent_appointment_view(request, id):
 @api_view(['GET', ])
 def api_specialist_appointment_view(request, id):
 
-    status = models.VideoSession.objects.get(specialist_id=id)
-    serializer = AppointmentSerializer(status)
+    status = models.VideoSession.objects.filter(specialist_id=id)
+    serializer = AppointmentSerializer(status, many=True)
     return Response(serializer.data)
 
 
@@ -279,3 +292,19 @@ def api_existing_parent_phone(request):
         return Response(status=status.HTTP_200_OK)
 
     return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+#########################################################################################
+#                       Booking appointment algorithm                                   #
+# 1-  view available slots based on a certain date ("using api_slot_serach")            #
+# 2-  create appointment using parent_id and slot_id ("using api_appointment_create")   #
+# 3-  change the slot "booked value" to 1 ("using api_slot_update")                     #
+#########################################################################################
+
+
+##############################################################################################################################
+#                       Deleting appointment algorithm                                  
+# 1-  view running appointment for this user ("using api_specialist_appointment_view  or  api_parentt_appointment_view")
+# 2-  delete appointment using appointment_id ("using api_appointment_delete"), get the appointment_id from the previous step   
+# 3-  change the slot "booked value" to 0 ("using api_slot_update"), get the slot_id from the appointment data                     
+##############################################################################################################################

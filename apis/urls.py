@@ -18,6 +18,7 @@ urlpatterns = [
     path("api/question/", views.api_question_view, name="questiondetail"),
     path("api/answer/<int:id>/", views.api_answer_create, name="answercreate"),
     path("api/slot/<int:id>/", views.api_slot_view, name="slotdetail"),
+    path("api/slotsearch/", views.api_slot_search, name="slotsearch"),
     path("api/slot/create/", views.api_slot_create, name="slotcreate"),
     path("api/slot/delete/<int:id>/", views.api_slot_delete, name="slotdelete"),
     path("api/slot/update/<int:id>/", views.api_slot_update, name="slotupdate"),
