@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Count
 from grad import models
 from .serializers import *
 import hashlib
@@ -130,19 +131,22 @@ def api_inquiry_view(request, id):
 
 
 @api_view(['GET', ])
-def api_question_view(request, id):
+def api_question_view(request):
 
-    question = models.Question.objects.get(id=id)
-    serializer = QuestionSerializer(question)
+    question = models.Question.objects.annotate(link_count=Count('RelatedAnswers')).filter(link_count=0).order_by('-id')
+    serializer = QuestionSerializer(question, many=True)
     return Response(serializer.data)
 
 
-@api_view(['GET', ])
-def api_answer_view(request, id):
+@api_view(['POST', ])
+def api_answer_create(request, id):
 
-    answer = models.Answer.objects.get(id=id)
-    serializer = AnswerSerializer(answer)
-    return Response(serializer.data)
+    answer = models.Answer()
+    serializer = AnswerSerializer(answer, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # shows all of the empty slots, needs slot ID.

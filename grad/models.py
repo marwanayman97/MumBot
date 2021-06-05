@@ -57,7 +57,7 @@ class Question(models.Model):
 class Answer(models.Model):
 
     answer_body = models.CharField(max_length=1000)
-    answer_date = models.DateTimeField(auto_now=False, auto_now_add=False)
+    answer_date = models.DateTimeField(auto_now=True, auto_now_add=False)
     answer_specialist = models.ForeignKey(
         Specialist, on_delete=models.CASCADE, related_name="AnsweredQuestions")
     answer_question = models.ForeignKey(

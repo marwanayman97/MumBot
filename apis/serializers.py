@@ -58,7 +58,7 @@ class QuestionSerializer(serializers.ModelSerializer):
             'question_body',
             'question_tags',
             'question_date',
-            'question_admin' 
+            
         )
         model = models.Question
 
