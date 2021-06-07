@@ -153,7 +153,7 @@ def api_answer_create(request, id):
 @api_view(['GET', ])
 def api_slot_view(request, id):
 
-    slots = models.Slots.objects.filter(schedule_specialist=id)
+    slots = models.Slots.objects.filter(schedule_specialist=id, booked=0)
     serializer = SlotSerializer(slots, many=True)
     return Response(serializer.data)
 

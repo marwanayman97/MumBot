@@ -76,6 +76,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 class SlotSerializer(serializers.ModelSerializer):
     class Meta:
         fields = (
+            'id',
             'schedule_specialist',
             'free_day',
             'slot_date',
