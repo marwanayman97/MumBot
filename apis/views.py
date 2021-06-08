@@ -159,7 +159,7 @@ def api_slot_view(request, id):
 
 # shows all of the empty slots, needs date in this format (ex. "YYYY-MM-DD") with request body ("daydate")
 # returns the distinct satrt and end time only
-@api_view(['GET', ])
+@api_view(['POST', ])
 def api_slot_search(request):
     try:
         slots = models.Slots.objects.filter(slot_date=request.data["daydate"], booked=0).values("id", "slot_start_time", "slot_end_time").distinct()
@@ -186,7 +186,7 @@ def api_slot_create(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# Deletes a slot when the specialist removes an emprty slot from his schedule, needs slot ID
+# Deletes a slot when the specialist removes an empty slot from his schedule, needs slot ID
 @api_view(['DELETE', ])
 def api_slot_delete(request, id):
 
