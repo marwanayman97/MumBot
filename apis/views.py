@@ -248,7 +248,7 @@ def api_appointment_delete(request, id):
     return Response(data=data)
 
 
-# creates a new apointment, needs parent Id, specialist Id (from slot Table), Date, Day in string (ex Saturday), Start time (ex 18:00) end time start + 1 hour
+# creates a new apointment, needs parent ID, slot ID
 
 @api_view(['POST', ])
 @csrf_exempt
