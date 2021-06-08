@@ -217,11 +217,11 @@ def api_slot_update(request, id):
 
 # Views all of the appointments of the parent, needs his ID
 @api_view(['GET', ])
-def api_parent_appointment_view(request, id):
+def api_parent_appointment_view(request, ids):
 
-    status = models.VideoSession.objects.filter(parent_id=id)
-    serializer = AppointmentSerializer(status, many=True)
-    return Response(serializer.data)
+    slots = models.Slots.objects.filter(id__in=(models.VideoSession.objects.filter(parent_id=ids).values("video_slot")))
+    serializer = SlotSerializer(slots, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 # Views all of the appointments of the specialist, needs his ID
 
@@ -229,9 +229,9 @@ def api_parent_appointment_view(request, id):
 @api_view(['GET', ])
 def api_specialist_appointment_view(request, id):
 
-    status = models.VideoSession.objects.filter(specialist_id=id)
-    serializer = AppointmentSerializer(status, many=True)
-    return Response(serializer.data)
+    slots = models.Slots.objects.filter(schedule_specialist=id, booked=1)
+    serializer = SlotSerializer(slots, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # deletes a certain appointment , needs its ID, and you should turn the slot.booked to 0 using the slot_update

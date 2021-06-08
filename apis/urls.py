@@ -22,7 +22,7 @@ urlpatterns = [
     path("api/slot/create/", views.api_slot_create, name="slotcreate"),
     path("api/slot/delete/<int:id>/", views.api_slot_delete, name="slotdelete"),
     path("api/slot/update/<int:id>/", views.api_slot_update, name="slotupdate"),
-    path("api/parentappointments/<int:id>/",
+    path("api/parentappointments/<int:ids>/",
          views.api_parent_appointment_view, name="parent_appointments"),
     path("api/specialistappointments/<int:id>/",
          views.api_specialist_appointment_view, name="specialist_appointments"),
