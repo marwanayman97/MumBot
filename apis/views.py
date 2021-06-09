@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Count
+from django.db.models import Count, F
 from grad import models
 from .serializers import *
 import hashlib
@@ -218,13 +218,16 @@ def api_slot_update(request, id):
 # Views all of the appointments of the parent, needs his ID
 @api_view(['GET', ])
 def api_parent_appointment_view(request, ids):
-
-    slots = models.Slots.objects.filter(id__in=(models.VideoSession.objects.filter(parent_id=ids).values("video_slot")))
-    serializer = SlotSerializer(slots, many=True)
+    try:
+        slots = models.Slots.objects.filter(id__in=(models.VideoSession.objects.filter(parent_id=ids).values("video_slot")))
+        serializer = SlotSerializer(slots, many=True)
+    except models.Slots.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-# Views all of the appointments of the specialist, needs his ID
 
+# Views all of the appointments of the specialist, needs his ID
 
 @api_view(['GET', ])
 def api_specialist_appointment_view(request, id):

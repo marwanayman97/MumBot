@@ -89,7 +89,7 @@ class VideoSession(models.Model):
         Parent, on_delete=models.CASCADE, related_name="VideoSessions")
     video_price = models.FloatField(default=50)
     video_duration_in_minutes = models.IntegerField(default=60)
-    video_slot = models.ForeignKey(Slots, on_delete=models.CASCADE)
+    video_slot = models.ForeignKey(Slots, on_delete=models.CASCADE, related_name="RelatedApp")
 
     def __str__(self):
         return f"{self.id}"
