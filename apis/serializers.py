@@ -83,8 +83,7 @@ class SlotSerializer(serializers.ModelSerializer):
             'slot_start_time_integer',
             'slot_start_time',
             'slot_end_time',
-            'booked',
-            'RelatedApp'
+            'booked'
         )
         model = models.Slots
    

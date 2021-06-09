@@ -158,7 +158,7 @@ def api_slot_view(request, id):
     return Response(serializer.data)
 
 # shows all of the empty slots, needs date in this format (ex. "YYYY-MM-DD") with request body ("daydate")
-# returns the distinct satrt and end time only
+# returns the distinct id, satrt time and end time only
 @api_view(['POST', ])
 def api_slot_search(request):
     try:
